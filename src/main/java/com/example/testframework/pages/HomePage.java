@@ -15,10 +15,9 @@ public class HomePage extends PageBase {
     private WebElement acceptCookiesBtn;
     @FindBy(id = "dashboard")
     private WebElement dashboard;
-    @FindBy(className = "AppHeader-user")
-    private WebElement profileBtn;
 
     //Use 'By' locators for dynamically loaded elements
+    private final By profileBtn = By.className("AppHeader-user");
     private final By signOutBtn = By.cssSelector("[href=\"/logout\"]");
     private final By signOutFromAllAccountsBtn = By.cssSelector("[value=\"Sign out from all accounts\"]");
     private final By cookiesConsentLbl = By.id("pixel-consent-container");
@@ -52,7 +51,7 @@ public class HomePage extends PageBase {
     }
 
     public void clickProfileButton() {
-        profileBtn.click();
+        waitUntilElementIsLocatedAndDisplayed(profileBtn).click();
     }
 
     public void clickSignOutButton() {

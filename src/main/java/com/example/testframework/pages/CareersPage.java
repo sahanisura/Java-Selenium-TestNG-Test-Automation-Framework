@@ -72,9 +72,9 @@ public class CareersPage extends PageBase {
 
     public void filterOpenPositionsBy(String value) {
         Optional<WebElement> filterValueElement = filterValuesList.stream()
-                .filter(webElement -> webElement.getText().substring(0, webElement.getText().indexOf("(") - 1)
-                        .equalsIgnoreCase(value))
-                .findFirst();
+                .filter(webElement -> waitUntilElementIsDisplayed(webElement)
+                        .getText().substring(0, webElement.getText().indexOf("(") - 1)
+                        .equalsIgnoreCase(value)).findFirst();
 
         filterValueElement.ifPresentOrElse(WebElement::click,
                 () -> {
