@@ -1,6 +1,6 @@
 # Selenium-Java based UI Automation Framework
 ## Introduction
-This repository contains the Selenium test scenarios to test the Login flow of the GitHub, and the Careers page.
+This repository contains the example Selenium test scenarios to test the Login flow of the GitHub, and the Careers page.
 ## Supported Operating Systems
 * Windows
 * Linux
