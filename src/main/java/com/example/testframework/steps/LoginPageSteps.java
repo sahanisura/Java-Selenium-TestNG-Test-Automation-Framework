@@ -62,7 +62,7 @@ public class LoginPageSteps extends StepBase {
     }
 
     public void validateErrorMessage(String expectedErrorMessage) {
-        String actualErrorMessage = loginPage.getErrorMessage();
+        String actualErrorMessage = loginPage.getErrorMessage().trim();
         softAssert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 }
