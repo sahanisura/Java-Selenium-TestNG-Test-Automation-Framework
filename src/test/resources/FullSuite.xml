@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name = "RegressionSuite" >
+    <test name="SequentialTests">
+        <parameter name="BrowserType" value="chrome"/>
+        <classes>
+            <class name = "com.example.testframework.test.LoginFlowTests" />
+            <class name = "com.example.testframework.test.CareersPageTests" />
+        </classes>
+    </test>
+</suite>
