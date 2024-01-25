@@ -3,6 +3,7 @@ package com.example.testframework.steps;
 import com.example.testframework.utils.Constants;
 import com.example.testframework.pages.NavigationMenuPage;
 import com.example.testframework.pages.HomePage;
+import com.example.testframework.utils.LoggerUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 
@@ -60,6 +61,7 @@ public class CommonSteps extends StepBase {
         try {
             homePage.isDashboardVisible();
         } catch (NoSuchElementException e) {
+            LoggerUtil.getDebugLogger().error("Test Failed. Failed to log in.");
             throw new AssertionError("Failed to log in.");
         }
     }
