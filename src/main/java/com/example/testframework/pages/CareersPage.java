@@ -10,12 +10,6 @@ import java.util.*;
 
 public class CareersPage extends PageBase {
     private String clickedPositionName;
-    @FindBy(css = ".clearfix .h2-mktg")
-    private WebElement heading;
-    @FindBy(css = ".clearfix .f3")
-    private WebElement paragraph;
-    @FindBy(linkText = "Open positions")
-    private WebElement openPositionsLnk;
     @FindBy(id = "location-filter")
     private WebElement locationsFilter;
     @FindBy(id = "category-filter")
@@ -26,28 +20,29 @@ public class CareersPage extends PageBase {
     private WebElement managementLevelFilter;
     @FindBy(xpath = "//mat-label[text()='Remote']/ancestor::*[7]")
     private WebElement remoteFilter;
-    @FindBy(className = "mat-option-text")
-    private List<WebElement> filterValuesList;
-    @FindBy(id = "search-results-indicator")
-    private WebElement searchResultsIndicator;
 
     //Use 'By' locators for dynamically loaded elements
+    private final By heading = By.cssSelector(".clearfix .h2-mktg");
+    private final By paragraph = By.cssSelector(".clearfix .f3");
+    private final By openPositionsLnk = By.linkText("Open positions");
+    private final By filterValues = By.className("mat-option-text");
     private final By openPositions = By.cssSelector(".job-results-container .search-result-item");
+    private final By searchResultsIndicator = By.id("search-results-indicator");
 
     public CareersPage(WebDriver driver) {
         super(driver);
     }
 
     public String getHeadingText() {
-        return waitUntilElementIsDisplayed(heading).getText();
+        return waitUntilElementIsLocatedAndDisplayed(heading).getText();
     }
 
     public String getParagraphText() {
-        return paragraph.getText();
+        return waitUntilElementIsLocatedAndDisplayed(paragraph).getText();
     }
 
     public void click0penPositionsButton() {
-        waitUntilElementIsDisplayed(openPositionsLnk).click();
+        waitUntilElementIsLocatedAndDisplayed(openPositionsLnk).click();
     }
 
     public void clickLocationsFilter() {
@@ -71,6 +66,7 @@ public class CareersPage extends PageBase {
     }
 
     public void filterOpenPositionsBy(String value) {
+        List<WebElement> filterValuesList = waitUntilElementsAreLocatedAndDisplayed(filterValues);
         Optional<WebElement> filterValueElement = filterValuesList.stream()
                 .filter(webElement -> waitUntilElementIsDisplayed(webElement)
                         .getText().substring(0, webElement.getText().indexOf("(") - 1)
@@ -90,7 +86,7 @@ public class CareersPage extends PageBase {
 
     public List<Map<String, String>> getVisiblePositionsDetails() {
         List<Map<String, String>> visiblePositionsDetailsList = new ArrayList<>();
-        List<WebElement> openPositionsList = waitUntilElementsAreLocatedAndDisplayed(openPositions);
+        List<WebElement> openPositionsList = driver.findElements(openPositions);
         openPositionsList.forEach(webElement -> {
             Map<String, String> positionDetailsMap = new HashMap<>();
             positionDetailsMap.put(Constants.POSITION_NAME, webElement.findElement(By.className("job-title")).getText());
@@ -124,22 +120,12 @@ public class CareersPage extends PageBase {
 
     public void clickApplyNowButton() {
         checkClickedPositionNameNotNull();
-        waitUntilChildElementIsDisplayed(getPosition(clickedPositionName), By.linkText("Apply Now")).click();
+        getPosition(clickedPositionName).findElement(By.linkText("Apply Now")).click();
     }
 
     public void scrollToThePosition(String position){
         WebElement element = getPosition(position);
-        executeJavaScript("arguments[0].scrollIntoView(true);", element);
-
-        //Custom wait is used to wait until scrolling is complete.
-        waitUntilForTheCustomCondition(driver -> {
-            int elementYCoordinate = element.getLocation().getY();
-            long windowYCoordinate = (long) executeJavaScript("return window.scrollY;");
-            if (elementYCoordinate == windowYCoordinate) {
-                return element;
-            }
-            return null;
-        });
+        scrollToTheElement(element);
     }
 
     private void checkClickedPositionNameNotNull() {
@@ -164,6 +150,6 @@ public class CareersPage extends PageBase {
     }
 
     private void waitUntilFilteringIsCompleted() {
-        waitUntilElementIsDisplayed(searchResultsIndicator);
+        waitUntilElementIsLocatedAndDisplayed(searchResultsIndicator);
     }
 }

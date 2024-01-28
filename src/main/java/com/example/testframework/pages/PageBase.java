@@ -24,6 +24,10 @@ public class PageBase {
         this.driver = driver;
     }
 
+    protected WebElement waitUntilElementIsLocated(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
     protected WebElement waitUntilElementIsLocatedAndDisplayed(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
@@ -61,5 +65,19 @@ public class PageBase {
     protected Object executeJavaScript(String script) {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         return jsExecutor.executeScript(script);
+    }
+
+    protected void scrollToTheElement(WebElement element) {
+        executeJavaScript("arguments[0].scrollIntoView(true);", element);
+
+        //Custom wait is used to wait until scrolling is complete.
+        waitUntilForTheCustomCondition(driver -> {
+            int elementYCoordinate = element.getLocation().getY();
+            long windowYCoordinate = (long) executeJavaScript("return window.scrollY;");
+            if (elementYCoordinate == windowYCoordinate) {
+                return element;
+            }
+            return null;
+        });
     }
 }

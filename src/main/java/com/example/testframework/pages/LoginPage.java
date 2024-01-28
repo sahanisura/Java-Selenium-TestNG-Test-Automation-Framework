@@ -8,23 +8,17 @@ import org.openqa.selenium.support.FindBy;
 public class LoginPage extends PageBase {
     @FindBy(css = "[for=\"login_field\"]")
     private WebElement usernameOrEmailAddressLbl;
-    @FindBy(id = "login_field")
-    private WebElement usernameOrEmailAddressTxt;
     @FindBy(css = "[for=\"password\"]")
     private WebElement passwordLbl;
-    @FindBy(id = "password")
-    private WebElement passwordTxt;
-    @FindBy(className = "js-sign-in-button")
-    private WebElement signInBtn;
-    @FindBy(id = "forgot-password")
-    private WebElement forgotPasswordLnk;
-    @FindBy(css = ".login-callout .Button-label")
-    private WebElement signInWithAPasskeyLbl;
-    @FindBy(className = "mt-1")
-    private WebElement createAnAccountLbl;
 
     //Use 'By' locators for dynamically loaded elements
     private final By logo = By.className("header-logo");
+    private final By signInWithAPasskeyLbl = By.cssSelector(".login-callout .Button-label");
+    private final By createAnAccountLbl = By.className("mt-1");
+    private final By signInBtn = By.className("js-sign-in-button");
+    private final By forgotPasswordLnk = By.id("forgot-password");
+    private final By usernameOrEmailAddressTxt = By.id("login_field");
+    private final By passwordTxt = By.id("password");
     private final By errorLbl = By.cssSelector("#js-flash-container [role=\"alert\"]");
 
     public LoginPage(WebDriver driver) {
@@ -32,7 +26,7 @@ public class LoginPage extends PageBase {
     }
 
     public boolean isLogoVisible() {
-        return waitUntilElementIsLocatedAndDisplayed(logo).isDisplayed();
+        return waitUntilElementIsLocated(logo).isDisplayed();
     }
 
     public boolean isUsernameOrEmailAddressLabelVisible() {
@@ -52,31 +46,31 @@ public class LoginPage extends PageBase {
     }
 
     public String getSignInButtonText() {
-        return signInBtn.getAttribute("value");
+        return waitUntilElementIsLocatedAndDisplayed(signInBtn).getAttribute("value");
     }
 
     public String getForgetPasswordText() {
-        return forgotPasswordLnk.getText();
+        return waitUntilElementIsLocatedAndDisplayed(forgotPasswordLnk).getText();
     }
 
     public String getSignInWithAPasskeyText() {
-        return waitUntilElementIsDisplayed(signInWithAPasskeyLbl).getText();
+        return waitUntilElementIsLocatedAndDisplayed(signInWithAPasskeyLbl).getText();
     }
 
     public String getCreateAnAccountLblText() {
-        return createAnAccountLbl.getText();
+        return waitUntilElementIsLocatedAndDisplayed(createAnAccountLbl).getText();
     }
 
     public void enterEmail(String email) {
-        waitUntilElementIsDisplayed(usernameOrEmailAddressTxt).sendKeys(email);
+        waitUntilElementIsLocatedAndDisplayed(usernameOrEmailAddressTxt).sendKeys(email);
     }
 
     public void enterPassword(String password) {
-        waitUntilElementIsDisplayed(passwordTxt).sendKeys(password);
+        waitUntilElementIsLocatedAndDisplayed(passwordTxt).sendKeys(password);
     }
 
     public void clickLoginButton() {
-        waitUntilElementIsDisplayed(signInBtn).click();
+        waitUntilElementIsLocatedAndDisplayed(signInBtn).click();
     }
 
     public String getErrorMessage() {

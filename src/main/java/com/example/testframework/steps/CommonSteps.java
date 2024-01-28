@@ -18,6 +18,8 @@ public class CommonSteps extends StepBase {
         } else if (pageName.equalsIgnoreCase("careers")) {
             HomePage homePage = new HomePage(driver);
             homePage.clickCareersLink();
+        } else {
+            throw new IllegalArgumentException("Invalid page name \"" + pageName + "\"");
         }
     }
 
